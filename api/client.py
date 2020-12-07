@@ -23,7 +23,8 @@ class Client(object):
     def do_get(self, params):
         url = self.HOSTNAME
         params["apikey"] = self.API_KEY
-        return requests.get(url, params=params)
+        response = requests.get(url, params=params)
+        return response.json()
 
     def search(self, params):
         return self.do_get(params)
