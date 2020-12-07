@@ -1,9 +1,13 @@
 import re
+
 from django.shortcuts import render
 from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .client import Client
+from .models import Favorites, Movie
 
 
 # Create your views here.
@@ -29,13 +33,16 @@ class OMDBView(generics.ListAPIView):
                 response.get('Error'),
                 status=status.HTTP_404_NOT_FOUND
             )
-        return Response(response, status=status.HTTP_200_OK)
-        
 
 
-class FavoriteListView(generics.ListCreateAPIView):
+class FavoriteBaseView(APIView):
+    authentication_classes = (IsAuthenticated, )
+    queryset = Favorites.objects.all()
+
+
+class FavoriteListView(FavoriteBaseView):
     pass
 
 
-class FavoriteDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FavoriteDetailView(FavoriteBaseView):
     pass
