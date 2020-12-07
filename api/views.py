@@ -24,7 +24,13 @@ class OMDBView(generics.ListAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         params = self.get_params(search_term)
         response = self.client.search(params)
-        return Response(response.json(), status=status.HTTP_200_OK)
+        if not response.get('Response') == 'True':
+            return Response(
+                response.get('Error'),
+                status=status.HTTP_404_NOT_FOUND
+            )
+        return Response(response, status=status.HTTP_200_OK)
+        
 
 
 class FavoriteListView(generics.ListCreateAPIView):
