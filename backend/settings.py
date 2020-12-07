@@ -129,3 +129,5 @@ STATIC_URL = '/static/'
 
 OMDB_HOST_NAME = 'http://omdbapi.com/'
 OMDB_API_KEY = 'cc47643c'
+
+LOGIN_REDIRECT_URL = '/api/v1/favorites/'
