@@ -25,7 +25,5 @@ class Client(object):
         params["apikey"] = self.API_KEY
         return requests.get(url, params=params)
 
-    def search(self, search_term):
-        params = {"s": search_term}
-        response = self.do_get(params)
-        return response
+    def search(self, params):
+        return self.do_get(params)
