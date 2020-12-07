@@ -15,3 +15,11 @@ class SearchView(generics.ListAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         response = self.client.search(search_term)
         return Response(response.json(), status=status.HTTP_200_OK)
+
+
+class FavoriteListView(generics.ListCreateAPIView):
+    pass
+
+
+class FavoriteDetailView(generics.RetrieveUpdateDestroyAPIView):
+    pass
