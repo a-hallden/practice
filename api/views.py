@@ -2,16 +2,16 @@ import re
 
 from django.shortcuts import render
 from rest_framework import generics, status
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .client import Client
 from .models import Favorites, Movie
+from .serializers import FavoritesSerializer, MovieSerializer
 
 
 # Create your views here.
-class OMDBView(generics.ListAPIView):
+class OMDBView(APIView):
     client = Client()
 
     def get_params(self, search_term):
@@ -33,16 +33,19 @@ class OMDBView(generics.ListAPIView):
                 response.get('Error'),
                 status=status.HTTP_404_NOT_FOUND
             )
+        if response.get('Search', False):
+            return Response(response.get('Search'), status=status.HTTP_200_OK)
+        return Response(response, status=status.HTTP_200_OK)
 
 
 class FavoriteBaseView(APIView):
-    authentication_classes = (IsAuthenticated, )
     queryset = Favorites.objects.all()
+    serializer_class = FavoritesSerializer
 
 
-class FavoriteListView(FavoriteBaseView):
+class FavoriteListView(FavoriteBaseView, generics.ListCreateAPIView):
     pass
 
 
-class FavoriteDetailView(FavoriteBaseView):
+class FavoriteDetailView(FavoriteBaseView, generics.RetrieveUpdateDestroyAPIView):
     pass
